@@ -1,12 +1,15 @@
-import express from 'express';
-import productRoutes from './routes/productRoutes';
+import express from "express";
+import productRoutes from "./routes/productRoutes";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
+// Middleware to parse JSON requests (if needed for more complex payloads in the future)
 app.use(express.json());
-app.use('/api', productRoutes);
+
+// Use the product routes
+app.use("/api", productRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

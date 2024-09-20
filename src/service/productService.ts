@@ -1,21 +1,24 @@
-import { Product } from '../models/product'; 
-import { mockProducts } from '../data/mockData';
+import { Product } from "../models/product";
+import { products } from "../data/mockData";
 
 export class ProductService {
   getAllProducts(): Product[] {
-    return mockProducts;
+    return products;
   }
 
-  getProductByName(name: string): Product | undefined {
-    return mockProducts.find(product => product.name.toLowerCase() === name.toLowerCase());
+  // Type narrowing applied based on search
+  getProductByNameOrSKU(query: { name?: string; sku?: string }): Product | null {
+    if (query.name) {
+      return products.find((product) => product.name === query.name) || null;
+    }
+    if (query.sku) {
+      return products.find((product) => product.sku === query.sku) || null;
+    }
+    return null;
   }
 
-  getProductBySKU(sku: string): Product | undefined {
-    return mockProducts.find(product => product.sku === sku);
-  }
-
-  purchaseProduct(id: number): string {
-    const product = mockProducts.find(p => p.id === id);
-    return product ? `Purchased ${product.name} for $${product.price}` : 'Product not found';
+  purchaseProduct(id: number): Product | null {
+    const product = products.find((p) => p.id === id);
+    return product || null;
   }
 }
